@@ -1,4 +1,3 @@
-from django.core.serializers import serialize
 from django.http import HttpRequest
 from rest_framework import views, generics, mixins, viewsets
 from rest_framework.response import Response
@@ -86,11 +85,11 @@ class ActorDetail(
     def put(self, request: HttpRequest, *args, **kwargs) -> Response:
         return self.update(request, *args, **kwargs)
 
-    def patch(self, request: HttpRequest, *args, **kwargs) -> Response:
-        return self.partial_update(request, *args, **kwargs)
-
     def delete(self, request: HttpRequest, *args, **kwargs) -> Response:
         return self.destroy(request, *args, **kwargs)
+
+    def patch(self, request: HttpRequest, *args, **kwargs) -> Response:
+        return self.partial_update(request, *args, **kwargs)
 
 
 class CinemaHallViewSet(
@@ -103,6 +102,9 @@ class CinemaHallViewSet(
 ):
     queryset = CinemaHall.objects.all()
     serializer_class = CinemaHallSerializer
+
+    def patch(self, request, *args, **kwargs):
+        return self.partial_update(request, *args, **kwargs)
 
 
 class MovieViewSet(viewsets.ModelViewSet):
